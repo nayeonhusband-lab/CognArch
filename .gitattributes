@@ -1,0 +1,6 @@
+CognArch/models/all-MiniLM-L6-v2/** filter=lfs diff=lfs merge=lfs -text
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.sh text eol=lf
+*.command text eol=lf
+

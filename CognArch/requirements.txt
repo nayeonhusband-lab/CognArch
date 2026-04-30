@@ -1,0 +1,27 @@
+# ================= 🤖 AI 系统依赖 =================
+# 安装命令: pip install -r requirements.txt
+
+# 核心依赖
+openai>=1.0.0
+pyyaml>=6.0
+
+# 文档处理
+PyMuPDF>=1.23.0           # PDF 读取 (fitz)
+python-docx>=1.1.0        # Word 读取
+python-pptx>=1.0.0        # PPTX 读取
+openpyxl>=3.1.0          # Excel 读取 (只读模式，低内存)
+pypandoc>=1.13.0          # 文档转换
+
+# OCR 识别
+rapidocr-onnxruntime>=1.3.0
+
+# 向量搜索 (轻量级 RAG)
+sentence-transformers>=2.2.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+
+# Web UI (Streamlit 本地应用) - 需要 1.33+ 支持 Fragment
+streamlit>=1.33.0
+
+# Markdown渲染
+markdown2>=2.4.0

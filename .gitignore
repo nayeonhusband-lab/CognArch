@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local packaged runtime
+runtime/
+
+# Build and release outputs
+dist/
+build/
+*.spec
+*.exe
+*.dmg
+*.pkg
+*.zip
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+CognArch/.claude/
+
+# CognArch user data and secrets
+CognArch/web_config.json
+CognArch/task_status.json
+CognArch/data/
+CognArch/inputs/
+CognArch/processed/
+CognArch/sessions/
+CognArch/knowledge_base/index.json
+CognArch/knowledge_base/vector_store/
+CognArch/knowledge_base/notes/
+CognArch/ingest_smoke_*/
+
+# Runtime data when COGNARCH_HOME points into the repo root
+data/
+inputs/
+processed/
+sessions/
+knowledge_base/index.json
+knowledge_base/vector_store/
+knowledge_base/notes/
+web_config.json
+task_status.json

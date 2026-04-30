@@ -1,0 +1,114 @@
+# CognArch 用户指南
+
+更新日期：2026-04-30
+
+## 这是什么
+
+CognArch 是一个本地知识库工作台，适合重文档场景：
+
+- 导入 PDF、DOCX、XLSX、PPTX、Markdown、TXT
+- 自动生成结构化笔记
+- 基于你自己的资料做检索和生成
+- 保留引用锚点，便于回看原文
+
+## 启动方式
+
+### 1. GitHub Release 运行包
+
+如果你拿到的是带 `runtime/` 的发布包，解压后可以直接启动：
+
+- Windows：双击根目录 `start.bat`
+- macOS：双击根目录 `run.command`
+
+这种方式不要求目标电脑先安装 Python。
+
+### 2. 源码仓库本地运行
+
+如果你拿到的是源码仓库，而不是 release 运行包，先在仓库根目录执行：
+
+```powershell
+python distribution\build_release.py --install-local-runtime --target windows
+```
+
+然后启动：
+
+```powershell
+.\start.bat
+```
+
+或者：
+
+```powershell
+python distribution\launcher.py
+```
+
+## 首次配置
+
+启动后，在侧边栏填入：
+
+- `DeepSeek API Key`
+- 可选的 `Base URL`
+
+没有 API Key 时，界面可以打开，但生成能力无法正常使用。
+
+## 日常使用
+
+### 导入资料
+
+1. 把文件拖进左侧上传区，或手动选择文件。
+2. 点击导入。
+3. 系统会解析文件、匹配技能、生成结构化笔记，并更新知识库索引。
+
+### 对话与生成
+
+在主对话区输入问题或任务，例如：
+
+- 直接提问某个概念
+- 要求生成综述
+- 让系统按指定大纲写内容
+
+你也可以先在知识库列表中勾选部分文档，再发起更精确的生成任务。
+
+### 维护知识库
+
+侧边栏提供重建和同步能力，用于：
+
+- 修复索引与文件不一致
+- 重建向量库
+- 清理失效条目
+
+## 目录说明
+
+默认情况下，运行数据保存在 `CognArch/` 目录下：
+
+- `inputs/`：待处理文件
+- `processed/`：归档后的原文件
+- `knowledge_base/notes/`：生成的笔记
+- `knowledge_base/index.json`：索引元数据
+- `knowledge_base/vector_store/`：向量库
+- `sessions/`：每次任务的输出
+
+如果不想把运行数据写在程序目录里，可以设置环境变量：
+
+```powershell
+$env:COGNARCH_HOME='D:\CognArchData'
+```
+
+## 旧版 `.doc` 说明
+
+旧版 `.doc` 文件仍然支持，但依赖 `antiword`：
+
+- 如果 `antiword` 已在系统 `PATH` 中，CognArch 会自动使用
+- 如果不在 `PATH` 中，可以设置：
+
+```powershell
+$env:COGNARCH_ANTIWORD='D:\tools\antiword\antiword.exe'
+```
+
+没有 `antiword` 时，不影响程序启动，也不影响其他文件类型；只会影响旧版 `.doc` 解析。
+
+## 常见提醒
+
+1. 运行过程中不要随意移动程序目录。
+2. 如果换电脑使用，优先分发 GitHub Release 里的 runtime 包，而不是源码压缩包。
+3. Windows 下如果端口 `8501` 被占用，启动器会自动尝试后续空闲端口。

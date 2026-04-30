@@ -1,0 +1,60 @@
+name: Build Release Packages
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-runtime:
+    name: ${{ matrix.label }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Windows x64 runtime
+            runner: windows-latest
+            target: windows
+          - label: macOS Apple Silicon runtime
+            runner: macos-15
+            target: macos-arm64
+          - label: macOS Intel runtime
+            runner: macos-15-intel
+            target: macos-x64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python for builder
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate syntax
+        shell: bash
+        run: |
+          python -c "import pathlib; [compile(p.read_text(encoding='utf-8-sig'), str(p), 'exec') for p in list(pathlib.Path('CognArch').rglob('*.py')) + list(pathlib.Path('distribution').rglob('*.py'))]"
+
+      - name: Build runtime package
+        run: python distribution/build_release.py --target ${{ matrix.target }} --with-runtime --python-version 3.12 --python-build-standalone-release 20260414 --clean-staging --prune-releases
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}-runtime
+          path: dist/releases/*-runtime*.zip
+          if-no-files-found: error
+
+      - name: Attach to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/releases/*-runtime*.zip
