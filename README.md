@@ -1,8 +1,7 @@
 # CognArch
 
-CognArch is a source-available, noncommercial local knowledge-base application
-for heavy document workflows: ingest documents, reconstruct structured notes,
-retrieve evidence, and generate grounded outputs from your own corpus.
+CognArch is an out-of-the-box, local-first knowledge base powered by discipline-specific cognitive models (e.g., CS, social sciences, law). Generate reading notes at scale, build reusable knowledge structures, and power precise Q&A, literature reviews, ideation, and writing—all grounded in your own corpus.
+一款开箱即用的本地化个人知识库应用，内置多学科认知模型（如计算机、社科、法学）。支持批量生成阅读笔记，构建可复用知识体系，并基于自有语料实现精准问答、文献综述、创意构思与写作。
 
 Last updated: 2026-04-30
 
