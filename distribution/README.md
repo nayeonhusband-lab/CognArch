@@ -36,10 +36,11 @@ start.bat
 ```
 
 The launcher first checks for a packaged `runtime/` Python next to
-`launcher.py` (or at the repository root during development). If present, it
-starts the existing Streamlit UI with that runtime. If not present, it creates
-`.venv/`, installs the platform requirements from `CognArch/`, starts
-Streamlit, and opens the default browser.
+`launcher.py` (or at the repository root during development). The macOS
+`run.command` / `run.sh` entrypoint follows the same rule before trying system
+`python3.12` or `python3`. If present, it starts the existing Streamlit UI with
+that runtime. If not present, it creates `.venv/`, installs the platform
+requirements from `CognArch/`, starts Streamlit, and opens the default browser.
 
 `distribution/start.bat` and `distribution/start.ps1` are the canonical Windows
 entrypoint module. The repository-root `start.bat` / `start.ps1` files are thin
@@ -83,6 +84,24 @@ such as `CognArch-windows-x64-1.zip`.
 
 The release zips include the `CognArch/` source module, `docs/`, and the
 required platform entrypoints at the zip root. Runtime zips also include a
-generated `runtime/` directory and `THIRD_PARTY_NOTICES.md`. They do not include
-`.venv/`, app-module helper scripts, user data, API keys,
+generated `runtime/` directory and `THIRD_PARTY_NOTICES.md`. macOS runtime zips
+do not require target machines to have Python preinstalled because `run.command`
+and `run.sh` prefer the packaged runtime. They do not include `.venv/`,
+app-module helper scripts, user data, API keys,
 sessions, or generated vector stores.
+
+## macOS Gatekeeper
+
+The packaged Python runtime is executable code. If a macOS zip is downloaded
+from the internet and is not Developer ID signed and notarized, Gatekeeper may
+block `runtime/.../python3` with an "unidentified developer" or "not verified"
+message even though the launcher found the packaged runtime correctly.
+
+For production macOS releases, sign the runtime after dependencies are
+installed and notarize the distributed artifact with an Apple Developer ID. For
+local testing only, a user can remove the download quarantine attribute from the
+extracted folder:
+
+```bash
+xattr -dr com.apple.quarantine CognArch-macos-arm64-runtime
+```
