@@ -25,7 +25,9 @@ Last updated: 2026-04-30
 - Runtime release builds: `python distribution/build_release.py --target windows --with-runtime`, `--target macos-arm64 --with-runtime`, or `--target macos-x64 --with-runtime`. Runtime builds use the pinned `python-build-standalone` release in `distribution/build_release.py` and `CognArch/constraints-runtime.txt` by default.
 - Repository-root `start.bat` and `start.ps1` are thin wrappers only; keep the real Windows startup logic in `distribution/start.bat` and `distribution/start.ps1`.
 - Windows release entrypoints are copied from `distribution/start.bat` and `distribution/start.ps1`.
-- macOS release entrypoints are copied from `distribution/run.command` and `distribution/run.sh`.
+- macOS release entrypoints are copied from `distribution/run.command` and `distribution/run.sh`; keep the real macOS startup logic in `distribution/run.sh`.
+- macOS `run.sh` must prefer packaged runtime Python before system Python: `runtime/bin/python3`, `runtime/bin/python`, `runtime/python/bin/python3`, `runtime/python/bin/python`, `runtime/install/bin/python3`, and `runtime/install/bin/python`. When executed from `distribution/` during development, it must also check `../runtime/` candidates before falling back to `python3.12` or `python3`.
+- macOS runtime zips should not require target machines to have Python preinstalled, but downloaded production artifacts still need Developer ID signing and notarization to avoid Gatekeeper blocking the packaged `python3`.
 - Do not hard-code Edge, Windows drive letters, or port `8501` as the only possible port.
 
 ## Validation
